@@ -1,0 +1,131 @@
+# =============================================
+# 医疗 AI 项目 - Git Ignore 规则
+# =============================================
+
+# === Python ===
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+*.egg-info/
+*.egg
+dist/
+build/
+*.whl
+
+# 虚拟环境
+.venv/
+venv/
+ENV/
+env/
+
+# === 系统文件 ===
+.DS_Store
+Thumbs.db
+Desktop.ini
+*.swp
+*.swo
+*~
+.AppleDouble
+
+# === IDE ===
+.vscode/
+.idea/
+*.sublime-*
+
+# === 医疗影像数据 (极大，禁止跟踪) ===
+# NIfTI 格式
+*.nii
+*.nii.gz
+
+# DICOM 格式
+*.dcm
+*.dicom
+*.ima
+
+# MHD/MRAW 格式
+*.mhd
+*.mraw
+*.raw
+
+# 其他医学格式
+*.nrrd
+*.nhdr
+*.stl
+*.obj
+*.hdr
+
+# 原始数据目录
+rawdata/
+data/
+datasets/
+
+# === 深度学习模型权重 (极大，禁止跟踪) ===
+# PyTorch
+*.pth
+*.pt
+*.pth.tar
+
+# ONNX
+*.onnx
+
+# TensorFlow
+*.h5
+*.pb
+
+# 模型检查点
+models/checkpoints/
+models/*.pt
+!models/README.md
+
+# 预训练权重
+*.pth.gz
+*.tar.gz
+
+# === 训练输出 (定期生成，极大) ===
+results/
+logs/
+runs/
+wandb/
+tensorboard/
+mlruns/
+
+# WandB 配置（如果使用）
+.wandb/
+
+# === 前端依赖与构建 ===
+web/node_modules/
+web/dist/
+web/build/
+web/.vite/
+web/.parcel-cache/
+
+# === Python 测试/缓存 ===
+.pytest_cache/
+.coverage
+htmlcov/
+*.cover
+.cache/
+.mypy_cache/
+.d监管
+
+# === 环境变量 (敏感) ===
+.env
+.env.local
+.env.*.local
+
+# === Jupyter Notebook ===
+.ipynb_checkpoints/
+*.ipynb
+
+# === Docker ===
+.dockerignore
+!Dockerfile
+
+# === 其他 ===
+*.tmp
+*.bak
+*.log
+*.temp
+*.cache

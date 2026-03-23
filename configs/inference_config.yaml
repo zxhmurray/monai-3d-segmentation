@@ -1,0 +1,74 @@
+# 推理配置文件
+
+# 模型配置
+model:
+  checkpoint_path: "models/checkpoints/best_model.pt"
+  in_channels: 1
+  out_channels: 1
+
+# 滑窗推理配置
+inference:
+  # 滑窗 ROI 尺寸
+  roi_size: [128, 128, 128]
+
+  # 每次推理的窗口数
+  sw_batch_size: 4
+
+  # 重叠率 (0.0 ~ 1.0)
+  overlap: 0.5
+
+  # 融合模式: gaussian / constant
+  blend_mode: "gaussian"
+
+  # 边缘填充模式: constant / reflection
+  padding_mode: "constant"
+
+  # 填充值
+  cval: 0.0
+
+# 预测阈值
+threshold: 0.5
+
+# 后处理配置
+postprocess:
+  enabled: true
+
+  # 阈值化
+  threshold: 0.5
+
+  # 保留最大连通域
+  keep_largest: true
+
+  # 填充孔洞
+  fill_holes: true
+
+  # 最小体积（体素数），None 表示不过滤
+  min_volume: 500
+
+  # 最大体积（体素数），None 表示不过滤
+  max_volume: null
+
+  # 平滑边界
+  smooth_boundary: false
+
+# 体积计算
+volume:
+  # 体素间距（如果为 null，则从 NIfTI header 读取）
+  spacing: null
+
+  # 体积单位: mm3 / cm3 / ml
+  unit: "cm3"
+
+# 输出配置
+output:
+  # 预测结果输出目录
+  predictions_dir: "results/predictions"
+
+  # 报告输出目录
+  reports_dir: "results/reports"
+
+  # 可视化输出目录
+  visualizations_dir: "results/visualizations"
+
+# 设备配置
+device: "cuda"

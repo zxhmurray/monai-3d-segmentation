@@ -1,0 +1,63 @@
+# MONAI 3D 医学影像分割 - Docker Compose
+
+version: '3.8'
+
+services:
+  # FastAPI 后端服务
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: monai-api
+    ports:
+      - "8000:8000"
+    volumes:
+      # 挂载模型目录
+      - ./models:/app/models
+      # 挂载上传目录
+      - ./data/uploads:/app/data/uploads
+      # 挂载结果目录
+      - ./results:/app/results
+      # 挂载日志目录
+      - ./logs:/app/logs
+    environment:
+      - PYTHONUNBUFFERED=1
+      - MONAI_API_HOST=0.0.0.0
+      - MONAI_API_PORT=8000
+      - MONAI_API_MODEL_DIR=/app/models
+      - MONAI_API_DEFAULT_MODEL=best_model.pt
+      - MONAI_API_MODEL_DEVICE=cuda
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+  # Web 前端 (开发环境使用 Vite)
+  web:
+    image: node:18-alpine
+    container_name: monai-web
+    working_dir: /app
+    command: sh -c "npm install && npm run dev -- --host"
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./web:/app
+    environment:
+      - VITE_API_URL=http://localhost:8000
+    depends_on:
+      - api
+    restart: unless-stopped
+
+networks:
+  default:
+    name: monai-network
